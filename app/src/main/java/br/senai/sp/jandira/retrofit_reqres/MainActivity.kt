@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.lifecycle.lifecycleScope
+import com.google.gson.JsonObject
 import kotlinx.coroutines.launch
-import retrofit2.create
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,9 +20,79 @@ class MainActivity : AppCompatActivity() {
 
         //AÇÃO DO BOTÃO GET
 
-        var teste = findViewById<Button>(R.id.btnGet).setOnClickListener{
+        findViewById<Button>(R.id.btnGet).setOnClickListener {
             getUserById()
         }
+
+        //AÇÃO DO BOTÃO POST
+
+        findViewById<Button>(R.id.btnPost).setOnClickListener {
+            createUser()
+        }
+
+        //AÇÃO DO BOTÃO PUT
+
+        findViewById<Button>(R.id.btnPut).setOnClickListener {
+            updateUser()
+        }
+
+        //AÇÃO DO BOTÃO DELETE
+
+        findViewById<Button>(R.id.btnDelete).setOnClickListener {
+            deleteUser()
+        }
+    }
+
+    private fun deleteUser() {
+
+        lifecycleScope.launch() {
+            val result = apiService.deleteUser(id = "3")
+
+            if (result.isSuccessful) {
+                Log.e("DELETEDATA", "${result.code()}")
+            } else {
+                Log.e("DELETEDATA", "${result.message()}")
+            }
+        }
+
+    }
+
+    private fun updateUser() {
+        lifecycleScope.launch {
+            val body = JsonObject().apply {
+                addProperty("name", "Mauricio")
+                addProperty("job", "Backend Developer")
+            }
+
+            val result = apiService.updateUser(id = "3", body = body)
+
+            if (result.isSuccessful) {
+                Log.e("UPDATEDATA", "${result.body()}")
+            } else {
+                Log.e("UPDATEDATA", "${result.message()}")
+            }
+        }
+    }
+
+    private fun createUser() {
+
+        lifecycleScope.launch {
+
+            val body = JsonObject().apply {
+                addProperty("name", "Vinicius")
+                addProperty("job", "Desenvolvedor Web")
+            }
+
+            val result = apiService.createUser(body)
+
+            if (result.isSuccessful) {
+                Log.e("CREATEDATA", "${result.body()}")
+            } else {
+                Log.e("CREATEDATA", "${result.message()}")
+            }
+        }
+
+
     }
 
     private fun getUserById() {
@@ -30,9 +100,9 @@ class MainActivity : AppCompatActivity() {
             //Chamada para o endpoint
             val result = apiService.getUserById("2")
 
-            if(result.isSuccessful){
+            if (result.isSuccessful) {
                 Log.e("GETDATA", "${result.body()?.data}")
-            }else{
+            } else {
                 Log.e("GETDATA", "${result.message()}")
             }
         }

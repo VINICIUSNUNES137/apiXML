@@ -3,6 +3,7 @@ package br.senai.sp.jandira.retrofit_reqres
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+//instancia do retrofit
 object RetrofitHelper {
 
     private const val baseurl = "https://reqres.in"

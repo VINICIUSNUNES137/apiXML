@@ -1,7 +1,7 @@
 package br.senai.sp.jandira.retrofit_reqres
 
 import com.google.gson.annotations.SerializedName
-
+//representação do objeto usuario
 data class UserResponse(
     @SerializedName("id") var id:Int? = 0,
     @SerializedName("email") var email:String? = "",
